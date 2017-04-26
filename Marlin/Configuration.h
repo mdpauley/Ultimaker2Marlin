@@ -10,7 +10,7 @@
 // build by the user have been successfully uploaded into firmware.
 #define STRING_VERSION_CONFIG_H __DATE__ " " __TIME__ // build date and time
 #ifndef STRING_CONFIG_H_AUTHOR
-#define STRING_CONFIG_H_AUTHOR "Version DEV" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "E3D Ultimate" // Who made the changes.
 #endif
 
 // SERIAL_PORT selects which serial port should be used for communication with the host.
@@ -163,7 +163,8 @@
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
 // You should use MINTEMP for thermistor short/failure protection.
-#define HEATER_0_MAXTEMP 275
+// increase the maximum temperature for the E3D V6 HotEnd
+#define HEATER_0_MAXTEMP 400
 #define HEATER_1_MAXTEMP 275
 #define HEATER_2_MAXTEMP 275
 #define BED_MAXTEMP 130
@@ -193,15 +194,20 @@
   #define PID_dT ((OVERSAMPLENR * 4.0)/(F_CPU / 64.0 / 256.0)) //sampling period of the temperature routine
 
 // If you are using a preconfigured hotend then you can use one of the value sets by uncommenting it
+// PID values for Ultimaker2 with E3D HotEnd
+    #define  DEFAULT_Kp 36.59
+    #define  DEFAULT_Ki 3.65
+    #define  DEFAULT_Kd 91.72
+    
 // Ultimaker
     //#define  DEFAULT_Kp 22.2
     //#define  DEFAULT_Ki 1.08
     //#define  DEFAULT_Kd 114
 
 // Ultimaker2
-    #define  DEFAULT_Kp 10.0
-    #define  DEFAULT_Ki 2.5
-    #define  DEFAULT_Kd 100.0
+    //#define  DEFAULT_Kp 10.0
+    //#define  DEFAULT_Ki 2.5
+    //#define  DEFAULT_Kd 100.0
 
 // Makergear
 //    #define  DEFAULT_Kp 7.0
@@ -322,7 +328,7 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define INVERT_X_DIR true     // for Mendel set to false, for Orca set to true
 #define INVERT_Y_DIR false    // for Mendel set to true, for Orca set to false
 #define INVERT_Z_DIR true     // for Mendel set to false, for Orca set to true
-#define INVERT_E0_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
+#define INVERT_E0_DIR true    // for direct drive extruder v9 set to true, for geared extruder set to false
 #define INVERT_E1_DIR true    // for direct drive extruder v9 set to true, for geared extruder set to false
 #define INVERT_E2_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
 
@@ -335,11 +341,14 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define min_software_endstops true // If true, axis won't move to coordinates less than HOME_POS.
 #define max_software_endstops true  // If true, axis won't move to coordinates greater than the defined lengths below.
 // Travel limits after homing
-#define X_MAX_POS 230
+// travel extents have reduced slightly for E3D HotEnd
+#define X_MAX_POS 215 // For E3D HotEnd
 #define X_MIN_POS 0
-#define Y_MAX_POS 224.5
+// travel extents have reduced slightly for E3D HotEnd
+#define Y_MAX_POS 210 // For E3D HotEnd
 #define Y_MIN_POS 0
-#define Z_MAX_POS 230
+// travel extents have reduced slightly for E3D HotEnd
+#define Z_MAX_POS 205 // For E3D HotEnd
 #define Z_MIN_POS 0
 
 #define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
@@ -361,14 +370,13 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
 #define HOMING_FEEDRATE {100*60, 100*60, 40*60, 0}  // set the homing speeds (mm/min)
 
-// default settings
-
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {80.0,80.0,200,282}  // default steps per unit for ultimaker2
-#define DEFAULT_MAX_FEEDRATE          {300, 300, 40, 45}    // (mm/sec)
-#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+// default steps per unit for Ultimaker2 and E3D Extruder
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {80.0,80.0,200,837}  //837 to be changed to 418.5 for if a 200 steps/mm motor is used
+#define DEFAULT_MAX_FEEDRATE          {300, 300, 40, 20}   // (mm/sec)
+#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,3000} // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
 #define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves
-#define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for retracts
+#define DEFAULT_RETRACT_ACCELERATION  3000    // X, Y, Z and E max acceleration in mm/s^2 for retracts
 
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
@@ -400,12 +408,12 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 #define EEPROM_CHITCHAT
 
 // Preheat Constants
-#define PLA_PREHEAT_HOTEND_TEMP 180
-#define PLA_PREHEAT_HPB_TEMP 70
+#define PLA_PREHEAT_HOTEND_TEMP 195
+#define PLA_PREHEAT_HPB_TEMP 64
 #define PLA_PREHEAT_FAN_SPEED 0     // Insert Value between 0 and 255
 
 #define ABS_PREHEAT_HOTEND_TEMP 240
-#define ABS_PREHEAT_HPB_TEMP 100
+#define ABS_PREHEAT_HPB_TEMP 90
 #define ABS_PREHEAT_FAN_SPEED 0     // Insert Value between 0 and 255
 
 //LCD and SD support
@@ -581,16 +589,16 @@ const bool Z_ENDSTOPS_INVERTING = true; // set to true to invert the logic of th
 
 
 // Configuration of behaviors at the start and end of prints
-#define END_OF_PRINT_RETRACTION 20		// number of mm to retract when printer goes idle
-#define END_OF_PRINT_RECOVERY_SPEED 5 	// speed to recover that assumed retraction at (mm/s)
-#define PRIMING_MM3	50					// number of mm^3 of plastic to extrude when priming
-										// (Ultimaker 2 hot end capacity is approx 80 mm^3)
-#define PRIMING_MM3_PER_SEC 5			// Rate at which to prime head (in mm^3/s)
-										// (Ultimaker 2 upper limit is 8-10)
-#define PRIMING_HEIGHT 20				// Height at which to perform the priming extrusions
+#define END_OF_PRINT_RETRACTION 20    // number of mm to retract when printer goes idle
+#define END_OF_PRINT_RECOVERY_SPEED 5   // speed to recover that assumed retraction at (mm/s)
+#define PRIMING_MM3 50          // number of mm^3 of plastic to extrude when priming
+                    // (Ultimaker 2 hot end capacity is approx 80 mm^3)
+#define PRIMING_MM3_PER_SEC 5     // Rate at which to prime head (in mm^3/s)
+                    // (Ultimaker 2 upper limit is 8-10)
+#define PRIMING_HEIGHT 20       // Height at which to perform the priming extrusions
 
 // Bed leveling wizard configuration
-#define LEVELING_OFFSET 0.1				// Assumed thickness of feeler gauge/paper used in leveling (mm)
+#define LEVELING_OFFSET 0.1       // Assumed thickness of feeler gauge/paper used in leveling (mm)
 
 #include "Configuration_adv.h"
 #include "thermistortables.h"
